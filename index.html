@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduMundo - Repositorio 5º Grado</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --primary:#4DA1FF;
+      --math:#FF6B6B;
+      --science:#4ECDC4;
+      --english:#FFD93D;
+
+      --bg:#F7F9FC;
+      --text:#2C3E50;
+      --muted:#7f8c8d;
+
+      --card:#ffffff;
+      --border:#E8EEF6;
+      --shadow: 0 8px 25px rgba(0,0,0,0.06);
+      --shadowHover: 0 12px 30px rgba(0,0,0,0.12);
+    }
+
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    body{
+      font-family:'Nunito',sans-serif;
+      background: radial-gradient(900px 450px at 20% 10%, rgba(77,161,255,.15), transparent),
+                  radial-gradient(900px 450px at 80% 15%, rgba(78,205,196,.12), transparent),
+                  var(--bg);
+      color:var(--text);
+    }
+
+    /* --- NAV --- */
+    nav{
+      background:rgba(255,255,255,.9);
+      backdrop-filter: blur(10px);
+      padding: 1rem 1.2rem;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo{
+      font-size:1.65rem;
+      font-weight:900;
+      color:var(--primary);
+      display:flex;
+      align-items:center;
+      gap:10px;
+      user-select:none;
+    }
+    .logo small{
+      font-size:.85rem;
+      font-weight:700;
+      color:#6b7a8a;
+      display:block;
+      margin-top:-2px;
+    }
+    .logo-wrap{display:flex; flex-direction:column; line-height:1.05;}
+
+    .auth-buttons button{
+      padding:.55rem 1.1rem;
+      border-radius: 999px;
+      border:none;
+      font-weight:800;
+      cursor:pointer;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-student{
+      background: var(--primary);
+      color:#fff;
+      margin-right: 10px;
+      box-shadow: 0 10px 18px rgba(77,161,255,.25);
+    }
+    .btn-teacher{
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+    .auth-buttons button:hover{
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    /* --- HEADER & SEARCH --- */
+    header{
+      text-align:center;
+      padding: 2.6rem 1rem 2.2rem;
+      background: linear-gradient(180deg, #eef6ff 0%, rgba(247,249,252,1) 100%);
+    }
+    h1{
+      font-size:2.4rem;
+      margin-bottom:.6rem;
+      color:var(--text);
+    }
+    p{
+      font-size:1.15rem;
+      color:var(--muted);
+      margin-bottom: 1.4rem;
+    }
+
+    .search-row{
+      max-width: 820px;
+      margin: 0 auto;
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      padding: 0 1rem;
+      align-items:center;
+    }
+
+    .search-container{ position:relative; }
+    #searchInput{
+      width:100%;
+      padding: .95rem 1.1rem;
+      border-radius: 999px;
+      border: 3px solid #E0E0E0;
+      font-size: 1.05rem;
+      outline:none;
+      transition:.25s;
+      background:#fff;
+    }
+    #searchInput:focus{
+      border-color: var(--primary);
+      box-shadow: 0 0 0 6px rgba(77,161,255,0.12);
+    }
+
+    .btn-clear{
+      padding: .9rem 1.1rem;
+      border-radius: 999px;
+      border: 2px solid var(--border);
+      background: #fff;
+      font-weight: 900;
+      cursor:pointer;
+      transition:.2s;
+    }
+    .btn-clear:hover{
+      border-color: rgba(77,161,255,.45);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .mini-info{
+      max-width: 820px;
+      margin: .85rem auto 0;
+      padding: 0 1rem;
+      display:flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      color:#6b7a8a;
+      font-size:.95rem;
+    }
+
+    /* --- TITLES --- */
+    .section-title{
+      text-align:center;
+      font-size: 1.7rem;
+      margin: 2rem 0 1.1rem;
+      position: relative;
+      display:inline-block;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .section-title::after{
+      content:'';
+      display:block;
+      width: 60%;
+      height: 5px;
+      background: var(--primary);
+      margin: 6px auto 0;
+      border-radius: 999px;
+    }
+
+    /* --- AREAS DE APRENDIZAJE --- */
+    .subjects{
+      display:flex;
+      justify-content:center;
+      gap: 16px;
+      flex-wrap:wrap;
+      padding: 0 1rem;
+      margin-bottom: 1.4rem;
+    }
+    .subject-card{
+      width: 260px;
+      padding: 1.6rem;
+      border-radius: 26px;
+      text-align:center;
+      cursor:pointer;
+      color: #fff;
+      transition: transform .25s, box-shadow .25s;
+      position: relative;
+      overflow:hidden;
+    }
+    .subject-card::before{
+      content:'';
+      position:absolute;
+      inset:-30px;
+      background: radial-gradient(180px 120px at 20% 20%, rgba(255,255,255,.28), transparent);
+      transform: rotate(12deg);
+      opacity:.9;
+    }
+    .subject-card:hover{
+      transform: translateY(-8px);
+      box-shadow: var(--shadowHover);
+    }
+    .sub-math{ background: linear-gradient(135deg, var(--math), #ff9a9a); }
+    .sub-science{ background: linear-gradient(135deg, var(--science), #88efe8); }
+    .sub-english{ background: linear-gradient(135deg, var(--english), #ffeaa0); color:#3f3f3f; }
+
+    .subject-icon{
+      font-size: 2.9rem;
+      margin-bottom: .7rem;
+      display:block;
+      position: relative;
+      z-index: 1;
+    }
+    .subject-name{
+      font-size: 1.45rem;
+      font-weight: 900;
+      position: relative;
+      z-index: 1;
+    }
+    .subject-sub{
+      font-size: .98rem;
+      opacity:.95;
+      position: relative;
+      z-index: 1;
+      margin-top: .25rem;
+    }
+
+    .subject-actions{
+      display:flex;
+      justify-content:center;
+      margin: 0 1rem 2.2rem;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .chip-btn{
+      padding: .55rem .9rem;
+      border-radius: 999px;
+      border: 2px solid var(--border);
+      background: #fff;
+      font-weight: 900;
+      cursor:pointer;
+      transition:.2s;
+      color:#405466;
+    }
+    .chip-btn:hover{
+      border-color: rgba(77,161,255,.45);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+    .chip-btn.active{
+      border-color: rgba(77,161,255,.85);
+      box-shadow: 0 0 0 6px rgba(77,161,255,0.10);
+      color: var(--primary);
+    }
+
+    /* --- RECURSOS --- */
+    .resources-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 18px;
+      padding: 1rem 8%;
+      margin-bottom: 1.5rem;
+    }
+
+    .resource-card{
+      background: var(--card);
+      border-radius: 22px;
+      padding: 1.35rem;
+      box-shadow: var(--shadow);
+      transition: transform .25s, box-shadow .25s, border-color .25s;
+      border: 1px solid var(--border);
+      border-bottom: 6px solid #eee;
+      position: relative;
+    }
+    .resource-card:hover{
+      transform: translateY(-6px);
+      box-shadow: var(--shadowHover);
+      border-bottom-color: var(--primary);
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      font-size: .78rem;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+    .tag.math{ color: var(--math); background:#ffebeb; }
+    .tag.science{ color: var(--science); background:#e0fbf9; }
+    .tag.english{ color:#9a7f00; background:#fff8cc; }
+
+    .meta-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top: 10px;
+    }
+    .badge{
+      font-size:.82rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background:#fbfcff;
+      color:#5d6f82;
+      font-weight: 800;
+    }
+
+    .res-title{
+      font-size: 1.18rem;
+      margin: 10px 0 6px;
+      font-weight: 900;
+    }
+    .res-desc{
+      font-size: .96rem;
+      color:#64707c;
+      line-height: 1.45;
+      margin-bottom: 10px;
+    }
+
+    .rating{
+      display:flex;
+      gap: 4px;
+      margin-top: 8px;
+      align-items:center;
+      user-select:none;
+    }
+    .rating button{
+      border:none;
+      background:transparent;
+      cursor:pointer;
+      font-size: 1.25rem;
+      color:#d6d6d6;
+      transition: transform .15s;
+      padding: 0;
+      line-height: 1;
+    }
+    .rating button:hover{ transform: scale(1.12); }
+    .rating button.active{ color: #f5b301; }
+
+    .rating small{
+      margin-left: 8px;
+      color:#7a8a99;
+      font-weight: 800;
+      font-size: .9rem;
+    }
+
+    .btn-access{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap: 10px;
+      width:100%;
+      padding: 11px;
+      margin-top: 12px;
+      background: var(--primary);
+      color:#fff;
+      border:none;
+      border-radius: 14px;
+      font-weight: 900;
+      cursor:pointer;
+      transition: transform .2s, background .2s, box-shadow .2s;
+      box-shadow: 0 10px 18px rgba(77,161,255,.18);
+      text-decoration:none;
+    }
+    .btn-access:hover{
+      background:#3b8cdb;
+      transform: translateY(-2px);
+      box-shadow: var(--shadowHover);
+    }
+
+    /* --- ROLES --- */
+    .roles{
+      padding: 0 8% 2.5rem;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+    .role-card{
+      background:#fff;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 1.2rem 1.3rem;
+    }
+    .role-card h3{
+      font-size: 1.1rem;
+      margin-bottom: .5rem;
+      font-weight: 900;
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+    .role-card ul{
+      margin-left: 1.1rem;
+      color:#64707c;
+      line-height: 1.6;
+      font-weight: 700;
+    }
+
+    /* --- MODAL LOGIN --- */
+    .modal{
+      display:none;
+      position:fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      background: rgba(0,0,0,0.45);
+      align-items:center;
+      justify-content:center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+    .modal-content{
+      background:#fff;
+      padding: 1.5rem 1.4rem 1.3rem;
+      border-radius: 24px;
+      width: 100%;
+      max-width: 420px;
+      text-align:center;
+      box-shadow: var(--shadowHover);
+      border: 1px solid var(--border);
+    }
+    .close-modal{
+      float:right;
+      cursor:pointer;
+      font-size:1.6rem;
+      font-weight: 900;
+      color:#7d8b98;
+    }
+    .modal-content h2{
+      margin-top: .2rem;
+      font-size: 1.55rem;
+      font-weight: 900;
+    }
+    .modal-content p{
+      margin: .35rem 0 1rem;
+      font-size: 1rem;
+    }
+    .login-input{
+      width:100%;
+      padding: 11px 12px;
+      margin: 8px 0;
+      border-radius: 14px;
+      border: 2px solid #e3e7ef;
+      outline:none;
+      font-weight: 800;
+    }
+    .login-input:focus{
+      border-color: var(--primary);
+      box-shadow: 0 0 0 6px rgba(77,161,255,0.12);
+    }
+
+    /* --- FOOTER --- */
+    footer{
+      text-align:center;
+      padding: 1.1rem 1rem 2rem;
+      color:#7a8a99;
+      font-weight: 800;
+    }
+
+    @media (max-width: 900px){
+      .resources-grid{ padding: 1rem 5%; }
+      .roles{ grid-template-columns: 1fr; padding: 0 5% 2.5rem; }
+      .search-row{ grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">
+    <span style="font-size:1.6rem;">🚀</span>
+    <div class="logo-wrap">
+      <span>EduMundo</span>
+      <small>Repositorio 5º Grado</small>
+    </div>
+  </div>
+
+  <div class="auth-buttons">
+    <button class="btn-student" onclick="openLogin('Estudiante')">Soy Estudiante</button>
+    <button class="btn-teacher" onclick="openLogin('Profe')">Soy Profe</button>
+  </div>
+</nav>
+
+<header>
+  <h1>¡Hola explorador! 🌍</h1>
+  <p>Encuentra recursos interactivos para aprender jugando ✨</p>
+
+  <div class="search-row">
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Busca: célula, inglés, fracciones..." onkeyup="filterResources()">
+    </div>
+    <button class="btn-clear" onclick="resetAll()">Ver todo</button>
+  </div>
+
+  <div class="mini-info">
+    <span>💡 Tip: primero elige una materia y luego busca.</span>
+    <span><strong id="resultCount">0</strong> recursos visibles</span>
+  </div>
+</header>
+
+<h2 class="section-title">Nuestras Materias</h2>
+<section class="subjects">
+  <div class="subject-card sub-math" onclick="filterBySubject('math')">
+    <span class="subject-icon">📐</span>
+    <div class="subject-name">Matemáticas</div>
+    <div class="subject-sub">Fracciones y números</div>
+  </div>
+
+  <div class="subject-card sub-science" onclick="filterBySubject('science')">
+    <span class="subject-icon">🌿</span>
+    <div class="subject-name">Ciencias</div>
+    <div class="subject-sub">La célula y sus partes</div>
+  </div>
+
+  <div class="subject-card sub-english" onclick="filterBySubject('english')">
+    <span class="subject-icon">🇬🇧</span>
+    <div class="subject-name">Inglés</div>
+    <div class="subject-sub">Saludos y comandos</div>
+  </div>
+</section>
+
+<div class="subject-actions">
+  <button class="chip-btn" id="chipMath" onclick="filterBySubject('math')">📐 Matemáticas</button>
+  <button class="chip-btn" id="chipScience" onclick="filterBySubject('science')">🌿 Ciencias</button>
+  <button class="chip-btn" id="chipEnglish" onclick="filterBySubject('english')">🇬🇧 Inglés</button>
+  <button class="chip-btn" onclick="resetAll()">🔄 Ver todo</button>
+</div>
+
+<h2 class="section-title">Recursos Destacados</h2>
+<section class="resources-grid" id="resourceContainer">
+
+  <!-- ✅ RECURSO REAL 1 (Educaplay adaptado) -->
+  <div class="resource-card" data-subject="science" data-keywords="célula núcleo adn crecer dividir vocabulario sopa de letras">
+    <span class="tag science">Ciencias</span>
+    <h3 class="res-title">Conociendo la célula (Sopa de letras)</h3>
+    <p class="res-desc">
+      Encuentra palabras como <strong>célula, núcleo y ADN</strong>. Ideal para reforzar vocabulario básico.
+    </p>
+
+    <div class="meta-row">
+      <span class="badge">Tipo: Juego</span>
+      <span class="badge">Nivel: 5º</span>
+      <span class="badge">Plataforma: Educaplay</span>
+    </div>
+
+    <div class="rating" data-rating="0">
+      <button aria-label="1 estrella" onclick="setRating(this,1)">★</button>
+      <button aria-label="2 estrellas" onclick="setRating(this,2)">★</button>
+      <button aria-label="3 estrellas" onclick="setRating(this,3)">★</button>
+      <button aria-label="4 estrellas" onclick="setRating(this,4)">★</button>
+      <button aria-label="5 estrellas" onclick="setRating(this,5)">★</button>
+      <small class="rating-text">Califica</small>
+    </div>
+
+    <a class="btn-access" href="https://es.educaplay.com/recursos-educativos/27274965-conociendo_la_celula.html" target="_blank" rel="noopener">
+      Acceder al recurso ▶
+    </a>
+  </div>
+
+  <!-- ✅ RECURSO REAL 2 (Wordwall adaptado) -->
+  <div class="resource-card" data-subject="english" data-keywords="hello good morning sit down stand up listen comandos saludos english">
+    <span class="tag english">Inglés</span>
+    <h3 class="res-title">Descubro palabras en inglés (Emparejar)</h3>
+    <p class="res-desc">
+      Practica <strong>saludos y comandos</strong> del aula con actividad tipo “une las parejas”.
+    </p>
+
+    <div class="meta-row">
+      <span class="badge">Tipo: Emparejar</span>
+      <span class="badge">Nivel: 5º</span>
+      <span class="badge">Plataforma: Wordwall</span>
+    </div>
+
+    <div class="rating" data-rating="0">
+      <button aria-label="1 estrella" onclick="setRating(this,1)">★</button>
+      <button aria-label="2 estrellas" onclick="setRating(this,2)">★</button>
+      <button aria-label="3 estrellas" onclick="setRating(this,3)">★</button>
+      <button aria-label="4 estrellas" onclick="setRating(this,4)">★</button>
+      <button aria-label="5 estrellas" onclick="setRating(this,5)">★</button>
+      <small class="rating-text">Califica</small>
+    </div>
+
+    <a class="btn-access" href="https://wordwall.net/resource/104992620/ingl%C3%A9s/descubro-palabras-en-ingl%C3%A9s" target="_blank" rel="noopener">
+      Acceder al recurso ▶
+    </a>
+  </div>
+
+  <!-- ✅ RECURSO REAL 3 (Genially adaptado) -->
+  <div class="resource-card" data-subject="math" data-keywords="fracciones suma resta denominador quiz matematicas numeros naturales">
+    <span class="tag math">Matemáticas</span>
+    <h3 class="res-title">Cool quiz: aprende matemáticas jugando</h3>
+    <p class="res-desc">
+      Responde preguntas sobre <strong>fracciones</strong> y operaciones básicas con retroalimentación.
+    </p>
+
+    <div class="meta-row">
+      <span class="badge">Tipo: Quiz</span>
+      <span class="badge">Nivel: 5º</span>
+      <span class="badge">Plataforma: Genially</span>
+    </div>
+
+    <div class="rating" data-rating="0">
+      <button aria-label="1 estrella" onclick="setRating(this,1)">★</button>
+      <button aria-label="2 estrellas" onclick="setRating(this,2)">★</button>
+      <button aria-label="3 estrellas" onclick="setRating(this,3)">★</button>
+      <button aria-label="4 estrellas" onclick="setRating(this,4)">★</button>
+      <button aria-label="5 estrellas" onclick="setRating(this,5)">★</button>
+      <small class="rating-text">Califica</small>
+    </div>
+
+    <a class="btn-access" href="https://view.genially.com/695af6c346719de83762ad12/interactive-content-i" target="_blank" rel="noopener">
+      Acceder al recurso ▶
+    </a>
+  </div>
+
+</section>
+
+<h2 class="section-title">Roles de Usuario</h2>
+<section class="roles">
+  <div class="role-card">
+    <h3>👩‍🏫 Docente</h3>
+    <ul>
+      <li>Selecciona recursos por área y propósito.</li>
+      <li>Comparte enlaces y orienta el uso pedagógico.</li>
+      <li>Evalúa recursos (estrellas/comentarios en el repositorio).</li>
+    </ul>
+  </div>
+
+  <div class="role-card">
+    <h3>🧒 Estudiante</h3>
+    <ul>
+      <li>Explora por materias o usando el buscador.</li>
+      <li>Accede a juegos y quizzes para practicar.</li>
+      <li>Aprende a su ritmo con actividades interactivas.</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  Prototipo académico – EduMundo (Repositorio RED para 5º de primaria).
+</footer>
+
+<!-- MODAL LOGIN -->
+<div id="loginModal" class="modal" aria-hidden="true">
+  <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <span class="close-modal" onclick="closeLogin()" aria-label="Cerrar">&times;</span>
+    <h2 id="modalTitle">Ingreso</h2>
+    <p>Ingresa para guardar tu progreso (simulado).</p>
+    <input type="text" placeholder="Usuario" class="login-input" />
+    <input type="password" placeholder="Contraseña" class="login-input" />
+    <button class="btn-access" onclick="closeLogin()">Entrar</button>
+  </div>
+</div>
+
+<script>
+  // --- Utilidades ---
+  function getCards(){
+    return Array.from(document.getElementsByClassName('resource-card'));
+  }
+
+  function updateCount(){
+    const visible = getCards().filter(c => c.style.display !== "none").length;
+    document.getElementById('resultCount').innerText = visible;
+  }
+
+  function clearActiveChips(){
+    ["chipMath","chipScience","chipEnglish"].forEach(id=>{
+      const el = document.getElementById(id);
+      if(el) el.classList.remove("active");
+    });
+  }
+
+  // --- Buscador por palabra clave ---
+  function filterResources(){
+    const input = document.getElementById('searchInput').value.toLowerCase().trim();
+    const cards = getCards();
+
+    cards.forEach(card=>{
+      const title = card.querySelector('.res-title').innerText.toLowerCase();
+      const desc  = card.querySelector('.res-desc').innerText.toLowerCase();
+      const keys  = (card.getAttribute('data-keywords') || "").toLowerCase();
+      const match = title.includes(input) || desc.includes(input) || keys.includes(input);
+
+      card.style.display = match ? "" : "none";
+    });
+
+    // al buscar, quitamos chips activos (porque ya filtra por texto)
+    clearActiveChips();
+    updateCount();
+  }
+
+  // --- Filtrado por materia ---
+  function filterBySubject(subject){
+    const cards = getCards();
+
+    cards.forEach(card=>{
+      const cardSubject = card.getAttribute('data-subject');
+      card.style.display = (cardSubject === subject) ? "" : "none";
+    });
+
+    // resaltar chip
+    clearActiveChips();
+    if(subject === "math") document.getElementById("chipMath").classList.add("active");
+    if(subject === "science") document.getElementById("chipScience").classList.add("active");
+    if(subject === "english") document.getElementById("chipEnglish").classList.add("active");
+
+    // limpiar búsqueda para evitar confusión
+    document.getElementById('searchInput').value = "";
+    updateCount();
+  }
+
+  // --- Reset ---
+  function resetAll(){
+    document.getElementById('searchInput').value = "";
+    clearActiveChips();
+    getCards().forEach(card => card.style.display = "");
+    updateCount();
+  }
+
+  // --- Estrellas (calificación real 1-5) ---
+  function setRating(button, rating){
+    const ratingWrap = button.parentElement; // .rating
+    ratingWrap.setAttribute("data-rating", rating);
+
+    const stars = Array.from(ratingWrap.querySelectorAll("button"));
+    stars.forEach((s, i)=>{
+      s.classList.toggle("active", i < rating);
+    });
+
+    const txt = ratingWrap.querySelector(".rating-text");
+    if(txt) txt.textContent = `Tu nota: ${rating}/5`;
+  }
+
+  // --- Modal Login ---
+  function openLogin(type){
+    const modal = document.getElementById('loginModal');
+    modal.style.display = 'flex';
+    modal.setAttribute("aria-hidden","false");
+    document.getElementById('modalTitle').innerText = 'Hola ' + type + ' 👋';
+  }
+
+  function closeLogin(){
+    const modal = document.getElementById('loginModal');
+    modal.style.display = 'none';
+    modal.setAttribute("aria-hidden","true");
+  }
+
+  window.onclick = function(event){
+    const modal = document.getElementById('loginModal');
+    if(event.target === modal){
+      closeLogin();
+    }
+  }
+
+  // init
+  resetAll();
+</script>
+
+</body>
+</html>
